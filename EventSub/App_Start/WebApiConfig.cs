@@ -21,6 +21,9 @@ namespace EventSub
                 defaults: new { eventId = RouteParameter.Optional }
             );
 
+            // Using the custom Json Converter allows us to take a dynamic set
+            // of data, and populate an object, while still being able to use
+            // the ASP.NET Web API validation tools found in the ApiController.
             var formatters = GlobalConfiguration.Configuration.Formatters;
             var jsonFormatter = formatters.JsonFormatter;
             jsonFormatter.SerializerSettings.Converters.Add(new LiveEventConverter());
