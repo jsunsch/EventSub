@@ -95,6 +95,22 @@
 
 @section scripts {
 <script>
+    /**
+     * Makes an XHR request that ensures the JsonConvert is called
+     * when passing the parameters to the action within the controller.
+     * 
+     * param url Relative URL to the base URL.
+     * param data Must be stringyfied JSON
+     */
+    function post(url, data) {
+        return $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: url,
+            data: data
+        });
+    }
+
     $(document).ready(function () {
         /**
          * This should all be made using Knockout.js. 
@@ -102,7 +118,17 @@
 
         $('#createevent').click(function () {
             $('#createeventoutput').html("");
-            $.post("/api/events/createevent", JSON.parse($('#createeventjson').val())).done(function (data) {
+
+            var xhr = post('/api/events/createevent', $('#createeventjson').val());
+            //var xhr = $.ajax({
+            //    type: "POST",
+            //    contentType: "application/json",
+            //    url: '/api/events/createevent',
+            //    data: $('#createeventjson').val()
+            //});
+
+            //var xhr = $.post("/api/events/createevent", JSON.parse($('#createeventjson').val()));
+            xhr.done(function (data) {
                 $('#createeventoutput').html("New id: " + data.Id);
             }).fail(function (result) {
                 $('#createeventoutput').html(result.statusText);
@@ -140,7 +166,11 @@
             var eventId = $('#subscribeeventid').val();
             if (eventId != "") {
                 $('#subscribeoutput').html("");
-                $.post("/api/eventsubscription/subscribe/" + eventId, JSON.parse($('#subscribejson').val())).done(function (data) {
+
+                var xhr = post("/api/eventsubscription/subscribe/" + eventId, $('#subscribejson').val());
+
+                //var xhr = $.post("/api/eventsubscription/subscribe/" + eventId, JSON.parse($('#subscribejson').val()));
+                xhr.done(function (data) {
                     $('#subscribeoutput').html("New id: " + data.Id);
                 }).fail(function (result) {
                     $('#subscribeoutput').html(result.statusText);
@@ -156,7 +186,11 @@
             var eventId = $('#unsubscribeeventid').val();
             if (eventId != "") {
                 $('#unsubscribeoutput').html("");
-                $.post("/api/eventsubscription/unsubscribe/" + eventId, JSON.parse($('#subscribejson').val())).done(function (data) {
+
+                var xhr = post("/api/eventsubscription/unsubscribe/" + eventId, $('#subscribejson').val());
+
+                //var xhr = $.post("/api/eventsubscription/unsubscribe/" + eventId, JSON.parse($('#subscribejson').val()));
+                xhr.done(function (data) {
                     $('#unsubscribeoutput').html(data);
                 }).fail(function (result) {
                     $('#unsubscribeoutput').html(result.statusText);

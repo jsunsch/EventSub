@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Amazon.DynamoDBv2;
 using NLog;
 using EventSub.Repositories;
 
@@ -30,6 +29,7 @@ namespace EventSub.Controllers
         /// Retrieves the list of all events found in the database.
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public IEnumerable<LiveEvent> GetEvents()
         {
             try
@@ -49,6 +49,7 @@ namespace EventSub.Controllers
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
+        [HttpGet]
         public LiveEvent GetEvent(Guid eventId)
         {
             LiveEvent liveEvent;
@@ -76,6 +77,7 @@ namespace EventSub.Controllers
         /// </summary>
         /// <param name="eventData">The Name member is required.</param>
         /// <returns>The new event's ID</returns>
+        [HttpPost]
         public HttpResponseMessage CreateEvent([FromBody]LiveEvent eventData)
         {
             try
